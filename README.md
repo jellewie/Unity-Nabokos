@@ -3,6 +3,7 @@
 This is the first game I made in Unity, and I left it rotten in the dust, So I hereby 0make all code public for everyone to use and learn from. I hope this code would help you in some way.
 Also my appologies for the mess I left behind, I dont know what version ('backup' or '2') is the newest
 
+also see 'Excel-sokoban' in my github projects
 
 
 ## How to (help and) open/edit this project?
