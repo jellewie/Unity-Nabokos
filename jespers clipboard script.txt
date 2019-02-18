@@ -1,0 +1,35 @@
+jespers clipboard script
+
+https://twitter.com/_eppz/status/941495420756353024
+
+
+
+
+
+clipbaord.java:
+-----------------------------------
+package com.Jespertheend.zeGame;
+
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.app.Application;
+import android.util.Log;
+ 
+public class clipboard extends Application{
+	@SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
+	static public void copyString(Context context, String data) {
+		int sdk = android.os.Build.VERSION.SDK_INT;
+		if(sdk < android.os.Build.VERSION_CODES.HONEYCOMB) {
+		    android.text.ClipboardManager clipboard = (android.text.ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE);
+		    clipboard.setText(data);
+		} else {
+		    android.content.ClipboardManager clipboard = (android.content.ClipboardManager)context.getSystemService(Context.CLIPBOARD_SERVICE); 
+		    android.content.ClipData clip = android.content.ClipData.newPlainText("ZeGame",data);
+		    clipboard.setPrimaryClip(clip);
+		}
+	}
+}
+-----------------------------------

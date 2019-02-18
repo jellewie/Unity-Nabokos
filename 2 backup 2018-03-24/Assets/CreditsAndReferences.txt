@@ -1,0 +1,27 @@
+This file contains credits to things I've copied of others and used directly
+
+
+Images:
+	Youtube logo, Free to use 2017-12-1
+		https://www.youtube.com/yt/about/brand-resources/#logos-icons-colors
+
+	Twitter logo, Free to use 2017-12-1
+		https://about.twitter.com/en_us/company/brand-resources.html
+Code
+	User manual Unity
+		https://docs.unity3d.com
+Sokoban Levels
+	From an old Excel Sokoban game I've made
+		http://jellewie.weebly.com/mijn-excel.html
+			these levels are based on the SAGA Sokoban version. Most of them at least
+
+FPS counter
+	Wikipedia 'FPSDisplay.cs'	4-1-2017
+		http://wiki.unity3d.com/index.php?title=FramesPerSecond
+
+
+
+The game that doesn't have a normal name yet
+It's like Christmas but worse
+Let's just pretend there is a good title here
+Why don't I just come op with a good game name?

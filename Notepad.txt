@@ -1,0 +1,34 @@
+Sokoban Sega	http://www.segabandonware.com/Sokoban.html
+Boxworld		http://home.planet.nl/~hietb062/boxworld.htm 	(with a player)
+Boxxle			https://www.playr.org/play/boxxle/81			(with a player)
+Shove it!		https://www.miniclip.com/games/shove-it/en/
+
+Sokoban wiki 	https://en.wikipedia.org/wiki/Sokoban#Sokoban_published_by_Thinking_Rabbit
+
+Sokoban solver robot to check min steps?
+
+Define animation speed, and buffer length in PlayGame, they will be overwritten on start so 1,1 is fine. But then the settingsfile is missing it kinda still work.
+create the settings file on boot????? check if unity exports this 
+make it so it saves; time spend, amount of steps, level, and data stamp so I can later see what levels are harder to finish. This to make a better level curve
+
+Update textures
+Make a way to cancel move when a button is pressed 	/	cancel moves when typing (an such)
+Add name and icon and more info stuff of the game
+Gamemode, do steps and press play to play the allv
+Disable the 'screen off' mode
+when animation done and button still pressed continue moving?
+Lopende band/teleporter. Stop auto ding na x seconds om loops te voorkomen
+Let the game not work when device is locked/Diable game on lockscreen
+
+Opties menu, Rotation off when off/ always off/ always on
+	Opties menu, animation speed.
+	Opties menu, Secet value max steps in memory
+Opties menu, Block screen edges (helps to use nav buttons)\
+Opties menu, Show steps taken on overlay
+Opties menu, Always shows status bar 
+
+Devine how to store 'steps' data and such (new file)
+Devine how to store user level edit data (new other file(s)?)
+
+
+Text and buttons need to be relative sizes to the screen
