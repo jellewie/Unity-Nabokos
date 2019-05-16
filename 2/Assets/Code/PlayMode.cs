@@ -95,7 +95,6 @@ public class PlayMode : MonoBehaviour
     //other private
     private GameObject ColidedWith;
     private GameObject[] ListWithObjects;                                           //TEMP, an array with objects, to select them temp (changes)
-    private int Steps = 0;                                                          //The amount of steps that have happened
     private int Undos = 0;                                                          //The amount of undos that have happened
     private int StepsMinimal;                                                       //The amount of steps to finisch the level (current record)
     private int StepsHighscore;                                                     //The amount of steps what the player used last time (if anny)
@@ -163,9 +162,7 @@ public class PlayMode : MonoBehaviour
                 FI.Delete();                                                        //Delete the save file
                 CheckBelowAllBoxed();                                               //check if boxes are on top of points and change them, also check if won
                 if (FolderSplashScreen.activeSelf)                                  //If loadingscreen is on
-                {
                     Button_SplashScreenOff();                                       //Hide Splashscreen and select next level
-                }
             }
             else
             {
@@ -203,9 +200,7 @@ public class PlayMode : MonoBehaviour
                                                             //TODO FIXME, Make it in  better way, and check if above code works, it should give you an penalty time when leaving the game
         }
         if (!FolderSplashScreen.activeSelf)                                         //If game isn't finisched
-        {
             SaveWorld("ResumeWorld.TXT");                                           //Autosave the level
-        }
     }
 
     void Zoom()                                                                     //Check for zoom input and zoom if found
@@ -221,27 +216,18 @@ public class PlayMode : MonoBehaviour
             float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;//Distance of touches
             float touchOffset = prevTouchDeltaMag - touchDeltaMag;
             if (PlayerPrefs.GetInt("InverseZoom", 0) == 0)
-            {
                 Camera.main.fieldOfView += touchOffset / ZoomSpeed;                 //change field of view
-            }
             else
-            {
                 Camera.main.fieldOfView -= touchOffset / ZoomSpeed;                 //change field of view
-            }
             TestFieldOfViewMinMax();
         }
         if (Input.GetAxis("Mouse ScrollWheel") != 0 && Application.isFocused)      //if there is a scoll wheel moving
         {
-
             //if (Input.mousePosition.x < 0 || Input.mousePosition.y < 0 || Input.mousePosition.x > Screen.width || Input.mousePosition.y > Screen.height)    //Check if mouse is outside the game
             if (PlayerPrefs.GetInt("InverseZoom", 0) == 0)
-            {
                 Camera.main.fieldOfView -= (Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed);   //change field of view
-            }
             else
-            {
                 Camera.main.fieldOfView += (Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed);   //change field of view
-            }
             TestFieldOfViewMinMax();
         }
     }
@@ -257,18 +243,12 @@ public class PlayMode : MonoBehaviour
         {
             string TheFile = Path.Combine(Application.persistentDataPath, Path.Combine("Custom", LevelNameToLoad + ".TXT"));
             if (System.IO.File.Exists(TheFile) == true) //Check if the file exist
-            {
                 CreateLevel("CustomLevel", TheFile); //Create the level from the file
-            }
             else
-            {
                 Debug.LogError("#ERROR004 - I can't seem to find that (custom) level; '" + LevelNameToLoad + "' ");  //Show an error message
-            }
         }
         else
-        {
             CreateLevel(LevelNameToLoad, "LevelData");                              //Load the data from the Datafile and create the selected level
-        }
     }
     void U0Timer()                                                                  //To record the time spend in the level
     {
@@ -282,9 +262,7 @@ public class PlayMode : MonoBehaviour
                     GamePaused = true;                                              //Pause the game
                 }
                 else
-                {
                     PlayTime = Time.fixedTime - StartTime;                          //Set the playtime
-                }
             }
             else if (GameHasBegun && !GameWon)                                      //If returning to the game
             {
@@ -298,16 +276,12 @@ public class PlayMode : MonoBehaviour
             GamePaused = true;
         }
         if (!EditMode && PlayerPrefs.GetInt("Konami", 0) == 1)                      //If we are not in edit mode (and in playmode)
-        {
             TextTimeSpend.text = "Timer: " + System.Convert.ToInt32(PlayTime);      //Show time spend
-        }
     }
     void U1GetInputs()                                                              //Get input and convert these to a string
     {
         if (Input.GetKeyDown(KeyCode.Escape))                                       //If player pressed back of ESC
-        {
             Button_BackToMenu();                                                    //Go back to menu
-        }
         InputVertical = Input.GetAxisRaw("Vertical");                               //Set input controls to keys
         InputHorizontal = Input.GetAxisRaw("Horizontal");                           //Set input controls to keys
         if (Input.touchCount == 1)                                                  //Check if Input has registered a touch
@@ -324,13 +298,9 @@ public class PlayMode : MonoBehaviour
                 float y = touchEnd.y - touchOrigin.y;                               //Calculate the difference between the beginning and end of the touch on the y axis.
                 touchOrigin.x = -1;                                                 //Set touchOrigin.x to -1 so that our else if statement will evaluate false and not repeat immediately.
                 if (Mathf.Abs(x) > Mathf.Abs(y))                                    //Check if the difference along the x axis is greater than the difference along the y axis.
-                {
                     InputHorizontal = x;                                            //x is set horizontal
-                }
                 else
-                {
                     InputVertical = y;                                              //y is set horizontal
-                }
             }
         }
         if (PlayerPrefs.GetInt("InverseMove", 0) == 1)                              //If controls are backwards
@@ -345,9 +315,7 @@ public class PlayMode : MonoBehaviour
                 if (Vertical == true)                                               //If forward and backwards are not pressed & are triggered before
                 {
                     if (InputVertical == 0)
-                    {
                         Vertical = false;                                           //Reset so forward and backwards can be triggered again
-                    }
                 }
                 else if (InputVertical < 0)                                         //if button forward is pressed & not handled before
                 {
@@ -362,9 +330,7 @@ public class PlayMode : MonoBehaviour
                 if (Horizontal == true)                                             //If left and right are not pressed & are triggered before
                 {
                     if (InputHorizontal == 0)
-                    {
                         Horizontal = false;                                         //Reset so left and right can be triggered again
-                    }
                 }
                 else if (InputHorizontal < 0)                                       //if button left is pressed & not handled before
                 {
@@ -399,45 +365,25 @@ public class PlayMode : MonoBehaviour
             IsMoving = true;													    //Set the move is being shown already
             PlayerStartPosition = Player.transform.position;                        //Set start position to move away from this position
             if (ApplyMove == "A")                                                   //If forward
-            {
                 PlayerEndPosition = PlayerStartPosition + new Vector3(0, 0, 1f);    //Set move to coordinate
-            }
             else if (ApplyMove == "B")                                              //If backwards
-            {
                 PlayerEndPosition = PlayerStartPosition + new Vector3(0, 0, -1f);   //Set move to coordinate
-            }
             else if (ApplyMove == "C")                                              //If Left
-            {
                 PlayerEndPosition = PlayerStartPosition + new Vector3(1f, 0, 0);    //Set move to coordinate
-            }
             else if (ApplyMove == "D")                                              //If Right
-            {
                 PlayerEndPosition = PlayerStartPosition + new Vector3(-1f, 0, 0);   //Set move to coordinate
-            }
             else if (ApplyMove == "U")                                              //If undo
-            {
                 Undo();                                                             //Do an undo
-            }
             else if (ApplyMove == "a")                                              //If place block a
-            {
                 Place_a();
-            }
             else if (ApplyMove == "b")                                              //If place block b
-            {
                 Place_b();
-            }
             else if (ApplyMove == "c")                                              //If place block c
-            {
                 Place_c();
-            }
             else if (ApplyMove == "d")                                              //If place block d
-            {
                 Place_d();
-            }
             else if (ApplyMove == "r")                                              //If place block d
-            {
                 Place_Remove();
-            }
             if (EditMode == false && PlayerEndPosition != PlayerStartPosition)      //If not in edit mode and player moved
             {
                 AbleToPushBlock = 2;                                                //We need to check if we are pushing and if thats a valid move
@@ -447,7 +393,6 @@ public class PlayMode : MonoBehaviour
             {
                 Debug.Log("Do we need this one? a");
                 MovePlayer(Player, PlayerEndPosition);                              //Show the animation
-                //StartCoroutine(AnimationPlayerMove());                              //Show the animation
             }
         }
     }
@@ -498,9 +443,7 @@ public class PlayMode : MonoBehaviour
             }
         }
         if (IsMoving)               //If the player needs to walk
-        {
             MovePlayer(Player, PlayerEndPosition);                          //Show the animation
-        }
         if (IsMoving && GameHasBegun == false)                                      //If this is the first move in the game
         {
             GameHasBegun = true;                                                    //Flag that the game has began
@@ -515,9 +458,7 @@ public class PlayMode : MonoBehaviour
         //
         string TextFromTheFile = "";
         if (LoadFrom == "LevelData")
-        {
             TextFromTheFile = FileLevelData.text;
-        }
         else
         {
             string TheFile = LoadFrom;
@@ -562,17 +503,11 @@ public class PlayMode : MonoBehaviour
             }
         }
         else
-        {
             Debug.LogError("#ERROR010 - Files out of date, please try an update; Looked for '" + CurrentVersionFile + "' Found '" + System.Convert.ToInt32(FileVersion[0]) + "'");
-        }
         if (EditMode)                                                               //If we are in edit mode
-        {
             return;                                                                 //Stop the code here so we dont enter playmodes
-        }
-        if (Steps > 0)
-        {
+        if (StepsTaken.Length > 0)
             GameHasBegun = true;
-        }
         else
         {
             PlayTime = 0;                                                           //Reset the timer
@@ -593,19 +528,15 @@ public class PlayMode : MonoBehaviour
         TextStepsMinimal.text = "Minimal steps: " + StepsMinimal;                   //Update text
         TextLevel.text = "Level: " + LevelName;                                     //Update text
         TextStepsTaken.text = StepsTaken;                                           //Update text
-        TextSteps.text = "Steps: " + System.Convert.ToString(Steps);                //Update text
+        TextSteps.text = "Steps: " + System.Convert.ToString(StepsTaken.Length);    //Update text
     }
     void GetHighscore(string LoadLevel, int NewScore)
     {
         string Source = "";
         if (LoadLevel.Substring(0, 1) != "c")
-        {
             Source = "Save.TXT";
-        }
         else
-        {
             Debug.LogError("Custom level, custom highscores not implented yet");
-        }
         if (Source != "")
         {
             string TextFromRecordFile = "";
@@ -622,9 +553,7 @@ public class PlayMode : MonoBehaviour
                 for (int A = 0; A < DataLevel.Length + 1; A++)
                 {
                     if (A == DataLevel.Length)                                      //If we reached the end of the string (and did not found the level)
-                    {
                         NewHighscore = true;                                        //Highscore - Level not played before
-                    }
                     else
                     {
                         string[] temp2 = DataLevel[A].Split(new string[] { "," }, StringSplitOptions.None);  //Split those cut files on ","
@@ -632,51 +561,35 @@ public class PlayMode : MonoBehaviour
                         {
                             StepsHighscore = System.Convert.ToInt16(temp2[2]);      //Get the current highscore
                             if (StepsHighscore > NewScore)                          //If we have a new record
-                            {
                                 NewHighscore = true;                                //Highscore - Score beaten
-                            }
                             for (int B = A + 1; B < DataLevel.Length; B++)          //Loop to get data after the level (to put back later)
-                            {
                                 TextAfter += "\r" + DataLevel[B];                   //Get the data (and temp save the data)
-                            }
                             A = DataLevel.Length;                                   //Stop the loop
                         }
                         else
                         {
                             if (A == 0)                                               //if this is the first line (line 0)
-                            {
                                 TextBefore += DataLevel[A];                         //Dont add an enter before this line (and temp save the data)
-                            }
                             else
-                            {
                                 TextBefore += "\r" + DataLevel[A];                  //Add an enter before the line (and temp save the data)
-                            }
                         }
                     }
                 }
             }
             else
-            {
                 NewHighscore = true;                                                //Highscore - Save file doesnt yet exist, so new highscore
-            }
             if (NewHighscore)                                                       //If we have a new highscore
             {
                 if (TextBefore == "" || TextAfter == "")                            //If file was emthy
-                {
                     TextFromRecordFile = "";                                        //Clear string
-                }
                 if (TextBefore != "")                                               //If there is data before the level
-                {
                     TextFromRecordFile = TextBefore + "\r";                         //Add the temp stored data
-                }
-                string Temp = LevelName + "," + GameWon + "," + Steps + "," + AnimationTime + "," + PlayTime + "," + StepsTaken; //create log
+                string Temp = LevelName + "," + GameWon + "," + StepsTaken.Length + "," + AnimationTime + "," + PlayTime + "," + StepsTaken; //create log
                 int CRC = GetCRC(Temp);                                             //Create a checksom
                 Temp += "," + CRC;                                                  //Add the checksom to the log
                 TextFromRecordFile += Temp;                                         //Add this highscore to the data
                 if (TextAfter != "")                                                //If there is data after the level
-                {
                     TextFromRecordFile += TextAfter;                                //Add the temp stored data
-                }
                 StreamWriter SW;
                 FI = new FileInfo(Path.Combine(Application.persistentDataPath, "Save.TXT"));
                 FI.Delete();
@@ -690,10 +603,8 @@ public class PlayMode : MonoBehaviour
     {
         Player.transform.position = new Vector3(0, 0, 0);                           //reset player position
         foreach (Transform child in BlocksFolderToClear.transform)                  //For each object in the "Blocks" folder
-        {
             Destroy(child.gameObject);                                              //Remove the object
-        }
-        Steps = 0;                                                                  //Reset (will triger code to tell this is a new level)
+        StepsTaken = "";                                                            //Reset (will triger code to tell this is a new level)
         string DataBlock;                                                           //The type of block
         string DataID;                                                              //The ID of the block
         int DataX;                                                                  //x coordinate
@@ -721,7 +632,7 @@ public class PlayMode : MonoBehaviour
                     if (SplitBlockData.Length >= 10)
                     {
                         Player.transform.position = new Vector3(System.Convert.ToInt32(SplitBlockData[5]), System.Convert.ToInt32(SplitBlockData[6]), System.Convert.ToInt32(SplitBlockData[7]));
-                        Steps = System.Convert.ToInt32(SplitBlockData[8]);
+                        //Steps = System.Convert.ToInt32(SplitBlockData[8]);
                         PlayTime = System.Convert.ToSingle(SplitBlockData[9]);
                         StepsTaken = SplitBlockData[10];
                     }
@@ -733,76 +644,56 @@ public class PlayMode : MonoBehaviour
                     DataY = System.Convert.ToInt32(SplitBlockData[2]);
                     DataZ = System.Convert.ToInt32(SplitBlockData[3]);
                     if (SplitBlockData.Length > 4)
-                    {
                         DataID = SplitBlockData[4];                                 //set DataID
-                    }
                     else
-                    {
                         DataID = "";                                                //Clear data ID so it doesn't get copied from last time
-                    }
                     if (DataBlock == "a")
                     {
                         var a = Instantiate(BlockA, new Vector3(DataX, DataY, DataZ), Quaternion.identity); //Create object and select it
                         a.transform.SetParent(BlocksFolder);                        //Sort the object in to the Blocks folder
                         if (DataID != "")                                           //If there is a BlockDataID (else keep the clone name
-                        {
                             a.name = DataID;                                        //Set the BlockDataID
-                        }
                     }
                     else if (DataBlock == "b")
                     {
                         var a = Instantiate(BlockB, new Vector3(DataX, DataY, DataZ), Quaternion.identity); //Create object and select it
                         a.transform.SetParent(BlocksFolder);                        //Sort the object in to the Blocks folder
                         if (DataID != "")                                           //If there is a BlockDataID (else keep the clone name
-                        {
                             a.name = DataID;                                        //Set the BlockDataID
-                        }
                     }
                     else if (DataBlock == "c")
                     {
                         var a = Instantiate(BlockC, new Vector3(DataX, DataY, DataZ), Quaternion.identity); //Create object and select it
                         a.transform.SetParent(BlocksFolder);                        //Sort the object in to the Blocks folder
                         if (DataID != "")                                           //If there is a BlockDataID (else keep the clone name
-                        {
                             a.name = DataID;                                        //Set the BlockDataID
-                        }
                     }
                     else if (DataBlock == "d")
                     {
                         var a = Instantiate(BlockD, new Vector3(DataX, DataY, DataZ), Quaternion.identity); //Create object and select it
                         a.transform.SetParent(BlocksFolder);                        //Sort the object in to the Blocks folder
                         if (DataID != "")                                           //If there is a BlockDataID (else keep the clone name
-                        {
                             a.name = DataID;                                        //Set the BlockDataID
-                        }
                     }
                 }
                 else
-                {
                     Debug.LogError("#ERROR003 - Missing variables to create a block, there are only '" + SplitBlockData.Length + "' variables B='" + B + "' Data='" + SplitBlocks[B] + "'");
-                }
             }
             else
-            {
                 Debug.LogError("#ERROR002 - Ignored an emthy line at = '" + (B + 2));
-            }
         }
         A = DataLevel.Length;                                                       //Stop the loop
     }
     void TestFieldOfViewMinMax()                                                    //Test if field of view is out of limits
     {
         if (Camera.main.fieldOfView < MaxZoomIn)                                    //If player is zoomed in too far in
-        {
             Camera.main.fieldOfView = MaxZoomIn;
-        }
         else if (Camera.main.fieldOfView > MaxZoomout)                              //If player is zoomed in too far away
-        {
             Camera.main.fieldOfView = MaxZoomout;
-        }
     }
     void Undo()                                                                     //Undo asked find what to undo
     {
-        if (Steps > 0)
+        if (StepsTaken.Length > 0)
         {
             ApplyMove = StepsTaken.Substring(StepsTaken.Length - 1);                //Get the last executed move
             if (ApplyMove == "A")                                                   //If forward
@@ -841,14 +732,11 @@ public class PlayMode : MonoBehaviour
                 AbleToPullBlock = 2;                                                //It need to pull the box (its able to do so)
                 PlayerEndPosition = PlayerStartPosition + new Vector3(1f, 0, 0);    //Set move to coordinate
             }
-            Steps -= 2;                                                             //remove this and last step fom the step count
             StepsTaken = StepsTaken.Substring(0, StepsTaken.Length - 1);            //Remove last move from the steps taken
             TextStepsTaken.text = StepsTaken;                                       //Display what moves have been done
             ApplyMove = "";                                                         //Dont write a move to the log}
-            if (Steps < 0)                                                          //If back at start position
-            {
+            if (StepsTaken.Length == 0)                                             //If back at start position
                 MovesBuffer = "R";                                                  //Ask for an reset, so timer etc will be reseted
-            }
         }
         else
         {
@@ -863,7 +751,7 @@ public class PlayMode : MonoBehaviour
         GamePaused = false;                                                         //Tell the timer it isnt paused
         StartTime = Time.fixedTime - PlayTime;                                      //Set the start time
         WriteDebug(true);                                                           //Write to the debug log file
-        GetHighscore(LevelName, Steps);                                             //Check if we have a new highscore
+        GetHighscore(LevelName, StepsTaken.Length);                                 //Check if we have a new highscore
         Star1.SetActive(false);                                                     //Hide star 1 (game finisched)
         Star2.SetActive(false);                                                     //Hide star 2 (Done with < (minimal steps * 1.2)
         Star3.SetActive(false);                                                     //Hide star 3 Done with minimal steps
@@ -873,26 +761,20 @@ public class PlayMode : MonoBehaviour
         TextSplashNewHighscore.text = "";                                           //Hide SplashNewHighscore that shows if you have made a percenal record
         FolderSplashScreen.SetActive(true);                                         //Show the folder with all the splashscreen stuff
         TextSplashLevelName.text = "Level " + LevelName + " Completed";             //Set the level name text
-        TextSplashSteps.text = "with " + Steps + " of the minimal " + StepsMinimal + " steps";  //Show minimal text 
-        float Thinktime = PlayTime - (Steps * AnimationTime);                       //Caculate Think Time
+        TextSplashSteps.text = "with " + StepsTaken.Length + " of the minimal " + StepsMinimal + " steps";  //Show minimal text 
+        float Thinktime = PlayTime - (StepsTaken.Length * AnimationTime);           //Caculate Think Time
         int min = System.Convert.ToInt32(Mathf.Floor(Thinktime / 60));              //Extract min of think time (only full ones)
         int sec = System.Convert.ToInt32(Mathf.Floor(Thinktime - min * 60));        //Extract sec of think time (exclude minutes)
         int msec = System.Convert.ToInt32((Thinktime - min * 60 - sec) * 100);      //Extract miliseconds
         string a = "";                                                              //Create a new string to put time in (mm:ss:??)
         if (min < 10)
-        {
             a = "0";
-        }
         a += min + ":";
         if (sec < 10)
-        {
             a += "0";
-        }
         a += sec + ".";
         if (msec < 10)
-        {
             a += "0";
-        }
         a += msec;
         TextSplashTime.text = a;                                                    //Show the time spend text
         TextSplashUndo.text = System.Convert.ToString(Undos);                       //Show amounts of undo's used
@@ -922,25 +804,19 @@ public class PlayMode : MonoBehaviour
                 a.name = ListWithObjects[i].name;                                   //Set the name of the , thats the ID
                 Destroy(ListWithObjects[i]);                                     	//remove the MoveAble box
                 if (ListWithObjects.Length <= 1)                                    //if this was the last one
-                {
                     GameEnd();                                                      //Game has ended
-                }
             }
         }
         if (ListWithObjects.Length == 0)                                            //if the game is won
-        {
             GameEnd();                                                              //Game has ended
-        }
     }
     void WriteDebug(bool GameWon)                                                   //To write what has been done to a file
     {
-        if (Steps < 5)
-        {
+        if (StepsTaken.Length < 5)
             return;
-        }
         try
         {
-            string Temp = LevelName + "," + GameWon + "," + Steps + "," + AnimationTime + "," + PlayTime + "," + StepsTaken; //create log
+            string Temp = LevelName + "," + GameWon + "," + StepsTaken.Length + "," + AnimationTime + "," + PlayTime + "," + StepsTaken; //create log
             int CRC = GetCRC(Temp);                                                 //Create a checksom
             Temp += "," + CRC;                                                      //Add the checksom to the log
             StreamWriter SW = new StreamWriter(Path.Combine(Application.persistentDataPath, "Debug.TXT"), true);
@@ -999,109 +875,57 @@ public class PlayMode : MonoBehaviour
         catch (Exception)
         {
             if (In == "a" || In == "A")
-            {
                 temp = 1;
-            }
             else if (In == "b" || In == "B")
-            {
                 temp = 2;
-            }
             else if (In == "c" || In == "C")
-            {
                 temp = 3;
-            }
             else if (In == "d" || In == "D")
-            {
                 temp = 4;
-            }
             else if (In == "e" || In == "E")
-            {
                 temp = 5;
-            }
             else if (In == "f" || In == "F")
-            {
                 temp = 6;
-            }
             else if (In == "g" || In == "G")
-            {
                 temp = 7;
-            }
             else if (In == "h" || In == "H")
-            {
                 temp = 8;
-            }
             else if (In == "i" || In == "I")
-            {
                 temp = 9;
-            }
             else if (In == "j" || In == "J")
-            {
                 temp = 10;
-            }
             else if (In == "k" || In == "K")
-            {
                 temp = 11;
-            }
             else if (In == "l" || In == "L")
-            {
                 temp = 12;
-            }
             else if (In == "m" || In == "M")
-            {
                 temp = 13;
-            }
             else if (In == "n" || In == "N")
-            {
                 temp = 14;
-            }
             else if (In == "o" || In == "O")
-            {
                 temp = 15;
-            }
             else if (In == "p" || In == "P")
-            {
                 temp = 16;
-            }
             else if (In == "q" || In == "Q")
-            {
                 temp = 17;
-            }
             else if (In == "r" || In == "R")
-            {
                 temp = 18;
-            }
             else if (In == "s" || In == "S")
-            {
                 temp = 19;
-            }
             else if (In == "t" || In == "T")
-            {
                 temp = 20;
-            }
             else if (In == "u" || In == "U")
-            {
                 temp = 21;
-            }
             else if (In == "v" || In == "V")
-            {
                 temp = 22;
-            }
             else if (In == "w" || In == "W")
-            {
                 temp = 23;
-            }
             else if (In == "x" || In == "X")
-            {
                 temp = 24;
-            }
             else if (In == "y" || In == "Y")
-            {
                 temp = 25;
-            }
             else if (In == "z" || In == "Z")
-            {
                 temp = 26;
-            }
         }
         return temp;
     }
@@ -1113,7 +937,7 @@ public class PlayMode : MonoBehaviour
         SW = FI.CreateText();
         string NewLine = CurrentVersionFile + ",I'm JelleWho the writer of these codes";
         SW.WriteLine(NewLine);
-        NewLine = "NextLevel," + LevelName + "," + NextLevelName + "," + StepsMinimal + "," + Camera.main.fieldOfView + "," + System.Convert.ToString(Player.transform.position.x) + "," + System.Convert.ToString(Player.transform.position.y) + "," + System.Convert.ToString(Player.transform.position.z) + "," + Steps + "," + PlayTime + "," + StepsTaken + ",";
+        NewLine = "NextLevel," + LevelName + "," + NextLevelName + "," + StepsMinimal + "," + Camera.main.fieldOfView + "," + System.Convert.ToString(Player.transform.position.x) + "," + System.Convert.ToString(Player.transform.position.y) + "," + System.Convert.ToString(Player.transform.position.z) + "," + StepsTaken.Length + "," + PlayTime + "," + StepsTaken + ",";
         SW.Write(NewLine);                                                          //Write the text to the file
         int TotalBlocks = BlocksFolder.childCount;
         for (int A = 0; A < TotalBlocks; A++)                                    //Do for each block in game
@@ -1140,15 +964,11 @@ public class PlayMode : MonoBehaviour
         else if (EditMode)
         {
             foreach (Transform child in BlocksFolderToClear.transform)              //For each object in the "Blocks" folder
-            {
                 Destroy(child.gameObject);                                          //Remove the object
-            }
             Player.transform.position = new Vector3(0, 0, 0);                            //make sure player is at the end position
         }
         else
-        {
             LoadLevel(LevelName);                                                   //Reload the current level
-        }
     }
     void Place_a()                                                                  //[EditMode] Place a block
     {
@@ -1197,32 +1017,24 @@ public class PlayMode : MonoBehaviour
     {
         RaycastHit hit;                                                    	        //make a temp value for raycast named hit
         if (Physics.Raycast(Player.transform.position - new Vector3(0, 1, 0), new Vector3(0, 1, 0), out hit, 1, ~(1 << 8)))
-        {
             Destroy(hit.transform.gameObject);                                      //remove the MoveAble box
-        }
     }
     void MovePlayer(GameObject TheBlock, Vector3 ToPos)                             //Called when the player needs to move
     {
-        StartCoroutine(AnimationMoveObject(TheBlock, ToPos));                        //Show the animation
+        StartCoroutine(AnimationMoveObject(TheBlock, ToPos));                       //Show the animation
         if (!EditMode)                                                              //If we are not in the editmode (and thus playmode)
         {
-            Steps++;                                                                //Add 1 to the amount of moves
             if (AbleToPushBlock == 1)                                               //If the player has moved a block
             {
                 StepsTaken = StepsTaken + System.Convert.ToString(ApplyMove.ToLower());   //Record what moves have been done (pushed a block so lower case)
                 AbleToPushBlock = 0;                                                //Reset able to push block so it doesnt keep pushing etc
             }
             else
-            {
                 StepsTaken = StepsTaken + System.Convert.ToString(ApplyMove);       //Record what moves have been done (not pushed a block so higher case)
-            }
             TextStepsTaken.text = StepsTaken;                                       //Display what moves have been done
-            TextSteps.text = "Steps: " + System.Convert.ToString(Steps);            //Reload text to be the right number
+            TextSteps.text = "Steps: " + System.Convert.ToString(StepsTaken.Length);//Reload text to be the right number
             if (AbleToPullBlock == 1)                                               //If there is a block pushed make sure its on the position
-            {
                 AbleToPullBlock = 0;                                                //Reset able to push block so it doesnt keep pushing etc
-            }
-
         }
     }
 
@@ -1275,15 +1087,15 @@ public class PlayMode : MonoBehaviour
         float waitfor = 0.5f;                                                       //Time to wait after an animation
         yield return new WaitForSeconds(waitfor);
         Star1.SetActive(true);
-        if (Steps < (StepsMinimal * 1.2f))
+        if (StepsTaken.Length < (StepsMinimal * 1.2f))
         {
             yield return new WaitForSeconds(waitfor);
             Star2.SetActive(true);
-            if (Steps <= StepsMinimal)                                              //If it is the minimal amount of steps
+            if (StepsTaken.Length <= StepsMinimal)                                  //If it is the minimal amount of steps
             {
                 yield return new WaitForSeconds(waitfor);
                 Star3.SetActive(true);
-                if (Steps < StepsMinimal)                                           //If the player beated the game highscore
+                if (StepsTaken.Length < StepsMinimal)                               //If the player beated the game highscore
                 {
                     TextSplashSteps.text += "\nYou are better then me, Please contact me :D";
                     yield return new WaitForSeconds(waitfor);
@@ -1296,7 +1108,7 @@ public class PlayMode : MonoBehaviour
             yield return new WaitForSeconds(waitfor);
             Star5.SetActive(true);
         }
-        if (Steps <= StepsMinimal)                                                  //If we need to show the minimalsteps splash
+        if (StepsTaken.Length <= StepsMinimal)                                      //If we need to show the minimalsteps splash
         {
             yield return new WaitForSeconds(waitfor);
             TextSplashMinimal.text = "Minimal steps!";                              //Show it
@@ -1306,34 +1118,30 @@ public class PlayMode : MonoBehaviour
         {
             yield return new WaitForSeconds(waitfor);
             TextSplashNewHighscore.text = "New Highscore!";                         //Show it
-            StartCoroutine(BouceObject(TextSplashNewHighscore, 300, 0.25f));              //Let it bounce
+            StartCoroutine(BouceObject(TextSplashNewHighscore, 300, 0.25f));        //Let it bounce
         }
     }
     IEnumerator BouceObject(Text BounceText, int BounceTime, float BounceDistance)
     {
         //BounceTime = (x/60= seconds)
         //BounceDistance = The distance to bound up and down (scale -+ X)
-        int b = BounceTime / 2;                                                 //We need this for the timer, Also the start position (start at 100%)
-        bool Toggle = false;                                                                    //If the animation text need to zoom in or out
-        while (BounceText.isActiveAndEnabled)                                   //Show animation while the splashscreen is shown
+        int b = BounceTime / 2;                                                     //We need this for the timer, Also the start position (start at 100%)
+        bool Toggle = false;                                                        //If the animation text need to zoom in or out
+        while (BounceText.isActiveAndEnabled)                                       //Show animation while the splashscreen is shown
         {
-            if (Toggle)                                                         //If going up
+            if (Toggle)                                                             //If going up
             {
-                if (b >= BounceTime - 1)                                        //If we bounce out all the way 
-                {
-                    Toggle = false;                                             //Toggle so we are going in again
-                }
-                b += 1;                                                         //Add 1 (we are expanding)
+                if (b >= BounceTime - 1)                                            //If we bounce out all the way 
+                    Toggle = false;                                                 //Toggle so we are going in again
+                b += 1;                                                             //Add 1 (we are expanding)
             }
-            else                                                                //Else we are going down
+            else                                                                    //Else we are going down
             {
-                if (b <= 1)                                                     //If we bounce in all the way
-                {
-                    Toggle = true;                                              //Toggle so we are going out again
-                }
-                b -= 1;                                                         //Remove 1 (we are shrinking)
+                if (b <= 1)                                                         //If we bounce in all the way
+                    Toggle = true;                                                  //Toggle so we are going out again
+                b -= 1;                                                             //Remove 1 (we are shrinking)
             }
-            float x = (BounceDistance * b * 2) / BounceTime + (1 - BounceDistance);       //calculate the current zoom factor (y*x*2/w +(1-y)) Thanks kim!
+            float x = (BounceDistance * b * 2) / BounceTime + (1 - BounceDistance); //calculate the current zoom factor (y*x*2/w +(1-y)) Thanks kim!
             BounceText.transform.localScale = new Vector3(x, x, x);  //Execute new scale (to let it bounce)
             yield return null;
         }
@@ -1345,7 +1153,6 @@ public class PlayMode : MonoBehaviour
         rectTransform.sizeDelta = new Vector2(Size, Size);                          //Set the size
         Vector2 from = new Vector2((-Screen.width + -Screen.height) / 2 - 10, Screen.height / 2);  //Set the 'from' position
         Vector2 to = new Vector2(Screen.width / 2, Screen.height / 2);              //End position of LoadAnimationBlackScreen
-
         LoadAnimationBar.SetActive(false);
         bool ShowAnimation = true;                                                  //Start to show animation
         float AnimationCurrentTime = 0;                                             //Where the animation is at
@@ -1403,9 +1210,7 @@ public class PlayMode : MonoBehaviour
     {
         touchOrigin.x = -1;                                                         //Cancel register touch as a valid move
         if (EditMode == false)
-        {
-            SaveWorld("ResumeWorld.TXT");                                         //Autosave the level
-        }
+            SaveWorld("ResumeWorld.TXT");                                           //Autosave the level
         StartCoroutine(LoadingAnimationOutAndLoadLevel("MainMenu"));                //Start loading screen in background, and go to it when done//
     }
     public void Button_Undo()
@@ -1413,29 +1218,21 @@ public class PlayMode : MonoBehaviour
         touchOrigin.x = -1;                                                         //Cancel register touch as a valid move
         Undos += 1;                                                                 //Add one to the undo counter
         if (MovesBuffer.Length < StepsBuffer)                                       //Check if string is to long (prevent hackers and spam moving)
-        {
             MovesBuffer = MovesBuffer + "U";                                        //Put an undo in the next move buffer
-        }
     }
     public void Button_Reset()
     {
         touchOrigin.x = -1;                                                         //Cancel register touch as a valid move
         WriteDebug(false);                                                          //Write debug (game isn't won)
         if (MovesBuffer == "R")                                                     //If already tried a soft reset
-        {
             ResetLevel();                                                           //lets try it with force
-        }
         else
-        {
             MovesBuffer = "R";                                                      //Set buffer to execute an Reset (also clears pref commands)
-        }
     }
     public void Button_CRC()
     {
         if (InputLevelName.text != "")
-        {
             Debug.Log(GetCRC(InputLevelName.text));
-        }
     }
     public void Button_ExecuteSteps()
     {
@@ -1451,9 +1248,7 @@ public class PlayMode : MonoBehaviour
         {
             string TheFile = Path.Combine(Application.persistentDataPath, Path.Combine("Custom", InputLevelName.text + ".TXT"));
             if (System.IO.File.Exists(TheFile) == true)                             //Check if the file exist
-            {
                 CreateLevel("CustomLevel", TheFile);                                //Create the level from the file
-            }
         }
     }
     public void Button_SaveCustomLevel()
@@ -1462,9 +1257,7 @@ public class PlayMode : MonoBehaviour
         {
             string TheFile = Path.Combine(Application.persistentDataPath, "Custom");
             if (System.IO.File.Exists(TheFile) == false)                            //Check if there is already a custom folder
-            {
                 Directory.CreateDirectory(TheFile);                                 //Create the custom folder
-            }
             NextLevelName = InputNextLevelName.text;
             SaveWorld(Path.Combine(TheFile, InputLevelName.text + ".TXT"));         //Save the world to the file
         }
