@@ -232,7 +232,7 @@ public class PlayMode : MonoBehaviour
         }
         if (Input.GetAxis("Mouse ScrollWheel") != 0 && Application.isFocused)      //if there is a scoll wheel moving
         {
-            
+
             //if (Input.mousePosition.x < 0 || Input.mousePosition.y < 0 || Input.mousePosition.x > Screen.width || Input.mousePosition.y > Screen.height)    //Check if mouse is outside the game
             if (PlayerPrefs.GetInt("InverseZoom", 0) == 0)
             {
@@ -298,7 +298,7 @@ public class PlayMode : MonoBehaviour
             GamePaused = true;
         }
         if (!EditMode && PlayerPrefs.GetInt("Konami", 0) == 1)                      //If we are not in edit mode (and in playmode)
-        { 
+        {
             TextTimeSpend.text = "Timer: " + System.Convert.ToInt32(PlayTime);      //Show time spend
         }
     }
@@ -389,7 +389,8 @@ public class PlayMode : MonoBehaviour
             {
                 ResetLevel();                                                       //Do an reset
                 return;
-            } else if (FolderSplashScreen.activeSelf)                               //Check if we are still showing the splashscreen
+            }
+            else if (FolderSplashScreen.activeSelf)                               //Check if we are still showing the splashscreen
             {
                 touchOrigin.x = -1;                                                         //Cancel register touch as a valid move
                 Button_SplashScreenOff();                                           //Turn the splashscreen off
@@ -461,9 +462,7 @@ public class PlayMode : MonoBehaviour
                 if (ColidedWith.gameObject.CompareTag("b") || ColidedWith.gameObject.CompareTag("c")) //Check if the object is MoveAble
                 {
                     AbleToPullBlock = 1;                                            //It need to pul the box (its able to do so)
-                    Debug.Log("Do we need this one? b");
-                    MovePlayer(Player, PlayerEndPosition);                          //Show the animation
-                    //StartCoroutine(AnimationPlayerMove());                          //Show the animation
+                    MovePlayer(ColidedWith.gameObject, PlayerStartPosition);        //Show the animation
                 }
                 else
                 {
@@ -483,7 +482,7 @@ public class PlayMode : MonoBehaviour
                     if (Physics.Raycast(ColidedWith.transform.position, -1 * (PlayerStartPosition - PlayerEndPosition), out hit, 1) == false)   //if the object has no obstacles ahead
                     {
                         AbleToPushBlock = 1;                                        //It need to push the box (its able to do so)
-                        StartCoroutine(AnimationMoveObject(ColidedWith, ColidedWith.transform.position  + (- 1 * (PlayerStartPosition - PlayerEndPosition))));                          //Show the animation
+                        StartCoroutine(AnimationMoveObject(ColidedWith, ColidedWith.transform.position + (-1 * (PlayerStartPosition - PlayerEndPosition))));                          //Show the animation
                     }
                     else
                     {
@@ -518,7 +517,8 @@ public class PlayMode : MonoBehaviour
         if (LoadFrom == "LevelData")
         {
             TextFromTheFile = FileLevelData.text;
-        } else
+        }
+        else
         {
             string TheFile = LoadFrom;
             if (System.IO.File.Exists(TheFile))
@@ -595,13 +595,14 @@ public class PlayMode : MonoBehaviour
         TextStepsTaken.text = StepsTaken;                                           //Update text
         TextSteps.text = "Steps: " + System.Convert.ToString(Steps);                //Update text
     }
-    void GetHighscore (string LoadLevel, int NewScore)
+    void GetHighscore(string LoadLevel, int NewScore)
     {
         string Source = "";
         if (LoadLevel.Substring(0, 1) != "c")
         {
             Source = "Save.TXT";
-        } else
+        }
+        else
         {
             Debug.LogError("Custom level, custom highscores not implented yet");
         }
@@ -623,7 +624,8 @@ public class PlayMode : MonoBehaviour
                     if (A == DataLevel.Length)                                      //If we reached the end of the string (and did not found the level)
                     {
                         NewHighscore = true;                                        //Highscore - Level not played before
-                    } else
+                    }
+                    else
                     {
                         string[] temp2 = DataLevel[A].Split(new string[] { "," }, StringSplitOptions.None);  //Split those cut files on ","
                         if (LoadLevel == System.Convert.ToString(temp2[0]))         //If the level in the file is the one we want
@@ -641,7 +643,7 @@ public class PlayMode : MonoBehaviour
                         }
                         else
                         {
-                            if (A==0)                                               //if this is the first line (line 0)
+                            if (A == 0)                                               //if this is the first line (line 0)
                             {
                                 TextBefore += DataLevel[A];                         //Dont add an enter before this line (and temp save the data)
                             }
@@ -849,7 +851,7 @@ public class PlayMode : MonoBehaviour
             }
         }
         else
-        {  
+        {
             //This is only called when the last undo is done and there is still an undo to do in the buffer
             ApplyMove = "";                                                         //Dont write a move to the log
             IsMoving = false;                                                       //Move is invaled
@@ -1134,13 +1136,14 @@ public class PlayMode : MonoBehaviour
         {
             LoadLevel(InputLevelName.text);                                         //Load the level set in the InputLevelName
             InputLevelName.text = "";                                               //Clear the InputLevelName
-        } else if (EditMode)
+        }
+        else if (EditMode)
         {
             foreach (Transform child in BlocksFolderToClear.transform)              //For each object in the "Blocks" folder
             {
                 Destroy(child.gameObject);                                          //Remove the object
             }
-            Player.transform.position = new Vector3(0,0,0);                            //make sure player is at the end position
+            Player.transform.position = new Vector3(0, 0, 0);                            //make sure player is at the end position
         }
         else
         {
@@ -1219,7 +1222,7 @@ public class PlayMode : MonoBehaviour
             {
                 AbleToPullBlock = 0;                                                //Reset able to push block so it doesnt keep pushing etc
             }
-            
+
         }
     }
 
@@ -1421,7 +1424,8 @@ public class PlayMode : MonoBehaviour
         if (MovesBuffer == "R")                                                     //If already tried a soft reset
         {
             ResetLevel();                                                           //lets try it with force
-        } else
+        }
+        else
         {
             MovesBuffer = "R";                                                      //Set buffer to execute an Reset (also clears pref commands)
         }
