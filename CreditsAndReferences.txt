@@ -17,11 +17,4 @@ Sokoban Levels
 
 FPS counter
 	Wikipedia 'FPSDisplay.cs'	4-1-2017
-		http://wiki.unity3d.com/index.php?title=FramesPerSecond
-
-
-
-The game that doesn't have a normal name yet
-It's like Christmas but worse
-Let's just pretend there is a good title here
-Why don't I just come op with a good game name?
+		http://wiki.unity3d.com/index.php?title=FramesPerSecon
