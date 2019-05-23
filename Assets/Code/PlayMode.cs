@@ -140,10 +140,10 @@ public class PlayMode : MonoBehaviour
     public GameObject Star5;
 
     //Backdoor settings
-    private int MaxZoomIn = 10;                                                     //The max level to let the user zoom in
-    private int MaxZoomout = 150;                                                   //The max level to let the user zoom out
-    private int ZoomSpeed = 18;                                                     //The zoom speed
-    private int CurrentVersionFile = 3;                                             //
+    private readonly int MaxZoomIn = 10;                                            //The max level to let the user zoom in
+    private readonly int MaxZoomout = 150;                                          //The max level to let the user zoom out
+    private readonly int ZoomSpeed = 18;                                            //The zoom speed
+    private readonly int CurrentVersionFile = 3;                                    //
 
     void Start()														            //Is called when initialization
     {
